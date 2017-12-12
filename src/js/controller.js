@@ -12,7 +12,10 @@ var app = new Vue({
       {text:"Add Topic", class:"modal-trigger", href:"#addTopic"}
     ],
     languages:[],
-    addLang: {name: null, desc : null, topic: null, framework:null, preprocessor:'',preprocessors:[]},
+    adding : {
+      lang: {name: null, desc : null, topic: null, framework:null, preprocessor:'',preprocessors:[], preActive: false},
+      topic: {name: null, desc : null},
+    },
     frameworks:[],
     topics:[],
     //editing
@@ -43,11 +46,23 @@ var app = new Vue({
       }, response => {}).bind(this);
     },
     addLanguage: function (form){
-      var lang = this.addLang;
+      if(this.adding.lang.name == null || this.adding.lang.name == null){return false;}
+      var lang = this.adding.lang;
       this.$http.post(this.createUrl('addLanguage'), lang).then(response => {
         console.log(response);
         if(this.errorCheck(response.body)){
-          this.languages.push(this.addLang);
+          this.languages.push(this.adding.lang);
+        }
+        else{console.log('data error : ' + response);}
+      }, response => {}).bind(this);
+    },
+    addTopic: function (form){
+      if(this.adding.topic.name == null || this.adding.topic.name == null){return false;}
+      var topic = this.adding.topic;
+      this.$http.post(this.createUrl('addTopic'), topic).then(response => {
+        console.log(response);
+        if(this.errorCheck(response.body)){
+          this.topics.push(this.adding.topic);
         }
         else{console.log('data error : ' + response);}
       }, response => {}).bind(this);
@@ -68,11 +83,17 @@ var app = new Vue({
       return url;
     },
     addToPreProcessors: function () {
-      var name = this.addLang.preprocessor;
-      if(name != ""){
-        this.addLang.preprocessors.push(name);
-        this.addLang.preprocessor = '';
+      console.log(this.adding.lang.preprocessor);
+      var preprocessor = {}
+      preprocessor.name = this.adding.lang.preprocessor;
+      if(preprocessor.name != ""){
+        this.adding.lang.preprocessors.push(preprocessor);
+        this.adding.lang.preprocessor = '';
       }
+    },
+    togglePre: function () {
+      this.adding.lang.preActive = !this.adding.lang.preActive;
+      if(!this.adding.lang.preActive){this.adding.lang.preprocessors = [];}
     }
   }
 })
