@@ -68,7 +68,7 @@ app.get('/Frameworks', function (req, res) {
 app.get('/Languages', function (req, res) {
   var match = "MATCH (l:Language)-[:PRE]->(p:Language) "
   var optional = "OPTIONAL MATCH (l)-[:IN]->(t:Topic), (l)<-[:USED]-(f:Framework) "
-  var back = "RETURN l as lang, t.name as topic, f.name as framework, collect(p.name) as pre";
+  var back = "RETURN l as lang, collect(t.name) as topic, f.name as framework, collect(p.name) as pre";
   db.cypher({query: (match + optional + back)},
   function (err, results) {
     var languages = [];
