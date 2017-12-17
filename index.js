@@ -66,9 +66,15 @@ app.get('/Frameworks', function (req, res) {
 });
 
 app.get('/Languages', function (req, res) {
+<<<<<<< HEAD
   var match = "MATCH (l:Language)-[:PRE]->(p:Language) "
   var optional = "OPTIONAL MATCH (l)-[:IN]->(t:Topic), (l)<-[:USED]-(f:Framework) "
   var back = "RETURN l as lang, collect(t.name) as topic, f.name as framework, collect(p.name) as pre";
+=======
+  var match = "MATCH (l:Language) ";
+  var optional = "OPTIONAL MATCH (l)<-[:PREPROCESSOR]-(p:Language), (l)-[:IN]->(t:Topic), (l)<-[:USED]-(f:Framework) "
+  var back = "RETURN l as lang, t.name as topic, f.name as framework, collect(p.name) as pre";
+>>>>>>> a4647e5019e7131213943111facef4b6fa895b34
   db.cypher({query: (match + optional + back)},
   function (err, results) {
     var languages = [];
@@ -86,8 +92,26 @@ app.get('/Languages', function (req, res) {
 
 //------------------ADD------------------//
 
+app.post('/addTopic', function (req, res) {
+  var topic=req.body,create="MERGE",rel="",back="RETURN t",params={};
+
+  params.name = topic.name;
+  params.desc = topic.desc;
+
+  create += "(t:Topic{name:{name},desc:{desc}})";
+
+  var statement = create + rel + back;
+  console.log(statement);
+
+  db.cypher({query: statement, params : params},
+  function (err, results) {
+    if(err){throw err;}
+    res.json(config.codes.sucess);
+  });
+});
+
 app.post('/addLanguage', function (req, res) {
-  var language=req.body,match="MATCH ",create="CREATE",rel="",back="RETURN l",params={};
+  var language=req.body,match="MATCH ",create="MERGE",rel="",back="RETURN l",params={};
 
   create += "(l:Language{name:{lang_name},desc:{lang_desc}})";
   params.lang_name = language.name;
@@ -112,16 +136,16 @@ app.post('/addLanguage', function (req, res) {
     });
     create += p_create;
     rel += p_rel;
+  }
 
-    var statement = match + create + rel + back;
-    console.log(statement);
+  var statement = match + create + rel + back;
+  console.log(statement);
 
-    db.cypher({query: statement, params : params},
+  db.cypher({query: statement, params : params},
     function (err, results) {
       if(err){throw err;}
       res.json(config.codes.sucess);
-    });
-  }
+  });
 });
 
 //------------------ERRORS------------------//

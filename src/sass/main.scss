@@ -1,4 +1,6 @@
 
+/*--------------CUSTOM--------------*/
+
 .form-optional{
   box-shadow: 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0);
 
@@ -29,6 +31,10 @@
   }
 }
 
+/*--------------AMENDS--------------*/
+
 .no-gutter{
   padding: 0 !important;
 }
+
+form.modal{max-height: 90%;}
