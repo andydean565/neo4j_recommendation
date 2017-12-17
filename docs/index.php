@@ -7,7 +7,7 @@
     <section id="topics" class="container">
       <div class="row" >
         <div class="col s12 m6 l6 xl4" v-for="(topic, i) in topics">
-          <topic-card :topic="topic" :index="i" v-model="adding.lang.topic"></topic-card>
+          <topic-card :topic="topic" :index="i" :lang_topic.sync="adding.lang.topic" :lang_framework.sync="adding.lang.lang_framework"></topic-card>
         </div>
       </div>
     </section>

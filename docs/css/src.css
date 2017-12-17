@@ -19,6 +19,19 @@
   .form-optional .item {
     padding: 0.5rem 0; }
 
+.language-card .card-content {
+  padding: 0 0; }
+
+.language-card .language-collection {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0; }
+  .language-card .language-collection .language-collection {
+    border: 0; }
+    .language-card .language-collection .language-collection .collection-item {
+      border: 0; }
+
 /*--------------AMENDS--------------*/
 .no-gutter {
   padding: 0 !important; }

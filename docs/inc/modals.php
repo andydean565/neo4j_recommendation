@@ -35,7 +35,7 @@
               <a href="#" class="btn-floating" v-on:click="addToPreProcessors"><i class="material-icons">add</i></a>
             </div>
           </div>
-          <list v-for="(preprocessor, index) in adding.lang.preprocessors" v-bind:text="preprocessor.name" v-on:remove="adding.lang.preprocessors.splice(index, 1)"></list>
+          <pre-list v-for="(preprocessor, index) in adding.lang.preprocessors" v-bind:text="preprocessor.name" v-on:remove="adding.lang.preprocessors.splice(index, 1)" :key="index"></pre-list>
         </div>
       </li>
     </ul>
@@ -45,8 +45,6 @@
     <input class="waves-effect waves-light btn" type="submit" value="Add Language">
   </div>
 </form>
-
-
 
 <form id="addTopic" class="modal" name="addTopic" enctype="multipart/form-data" class="modal-content" v-on:submit.prevent="addTopic">
   <div class="modal-content">

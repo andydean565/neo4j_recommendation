@@ -12,27 +12,37 @@ Vue.component('topic-card', {
   },
   template : "#topic-card",
   methods: {
-    update: function (value) {
-      this.$emit('input', value)
+    c_addLang: function (value) {this.$emit('input:lang_topic', value)},
+    c_addFrame: function (value) {this.$emit('update:lang_framework', value)},
+    findLanguage: function (prop,lang,index) {
+      var l = this.$root.findLanguage(prop,lang,index);
+      console.log(l);
+      return l;
     }
+  },
+  mounted: function () {
   }
 });
 
-Vue.component('language-tab', {
+Vue.component('language-list', {
   props: {
     languages: {type: Array},
-    topic: {type: String},
-    index: {type: Number}
+    language: {type: Object}
   },
-  template : "#language-tab",
+  template : "#language-list",
   methods: {
-    update: function (value) {
-      this.$emit('input', value)
+    findLanguage: function (lang) {
+      var l = this.$root.findLanguage('name',lang,false);
+      if(l){
+        return l;
+      }else{return false;}
     }
+  },
+  mounted: function () {
   }
 });
 
-Vue.component('list', {
+Vue.component('pre-list', {
   props: ['text'],
   template: '<div class="row valign-wrapper"><div class="col s6 item">{{ text }}</div><div class="col s6 item"><button class="btn-floating" v-on:click="$emit(\'remove\')"><i class="material-icons">clear</i></button></div></div>'}
 )
