@@ -67,16 +67,20 @@ app.get('/Frameworks', function (req, res) {
 
 app.get('/Languages', function (req, res) {
   var match = "MATCH (l:Language) ";
-  var optional = "OPTIONAL MATCH (l)<-[:PREPROCESSOR]-(p:Language), (l)-[:IN]->(t:Topic), (l)<-[:USED]-(f:Framework) "
+  var optional = "OPTIONAL MATCH (p)-[:PREPROCESSOR]->(l)";
+  optional += "OPTIONAL MATCH (l)<-[:USES]-(f:Framework) "
+  optional += "OPTIONAL MATCH (t:Topic)<-[:IN]-(l:Language)";
   var back = "RETURN l as lang, t.name as topic, f.name as framework, collect(p.name) as pre";
-  db.cypher({query: (match + optional + back)},
+  var query = (match + optional + back);
+  console.log(query);
+  db.cypher({query: query},
   function (err, results) {
     var languages = [];
     if(err){throw err;}
     results.forEach(function(language){
       var tmp = language['lang'];
       tmp.topic = language['topic'];
-      tmp.framwork = language['framework'];
+      tmp.framework = language['framework'];
       tmp.preprocessors = language['pre'];
       languages.push(tmp);
     });
