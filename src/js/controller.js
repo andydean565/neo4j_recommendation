@@ -18,7 +18,6 @@ var app = new Vue({
     },
     frameworks:[],
     topics:[],
-    //editing
   },
   created : function(){
     this.getTopics();
@@ -68,6 +67,14 @@ var app = new Vue({
       }, response => {}).bind(this);
     },
     //general
+    findLanguage: function(prop, val, index){
+      for (var i = 0; i < this.languages.length; i++) {
+        if(this.languages[i].properties[prop] == val){
+          if(index){return i;}
+          else{return this.languages[i];}
+        }
+      }
+    },
     errorCheck: function(error){
       switch (error) {
         case this.config.codes.success: return true; break;

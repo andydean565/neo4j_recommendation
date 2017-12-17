@@ -46,11 +46,15 @@ app.use(function (req, res, next) {
 //------------------GET------------------//
 
 app.get('/Topics', function (req, res) {
-  db.cypher({query: 'MATCH (t:Topic) RETURN t'},
+  db.cypher({query: 'MATCH (t:Topic) OPTIONAL MATCH (t)<-[:IN]-(l:Language) RETURN t as topic, collect(l.name) as languages'},
   function (err, results) {
     var topics = [];
     if(err){throw err;}
-    results.forEach(function(topic){topics.push(topic['t']);});
+    results.forEach(function(topic){
+      var tmp = topic['topic'];
+      tmp.languages = topic['languages'];
+      topics.push(tmp);
+    });
     res.json(topics);
   });
 });
@@ -67,6 +71,7 @@ app.get('/Frameworks', function (req, res) {
 
 app.get('/Languages', function (req, res) {
   var match = "MATCH (l:Language) ";
+<<<<<<< HEAD
   var optional = "OPTIONAL MATCH (p)-[:PREPROCESSOR]->(l)";
   optional += "OPTIONAL MATCH (l)<-[:USES]-(f:Framework) "
   optional += "OPTIONAL MATCH (t:Topic)<-[:IN]-(l:Language)";
@@ -74,6 +79,11 @@ app.get('/Languages', function (req, res) {
   var query = (match + optional + back);
   console.log(query);
   db.cypher({query: query},
+=======
+  var optional = "OPTIONAL MATCH (l)-[:PRE]->(p:Language)"
+  var back = "RETURN l as lang, collect(p.name) as pre";
+  db.cypher({query: (match + optional + back)},
+>>>>>>> 7f11aa7492cde68cc966c88873b3c2dd2b991332
   function (err, results) {
     var languages = [];
     if(err){throw err;}
